@@ -1,0 +1,45 @@
+# datasources.yml
+apiVersion: 1
+datasources:
+  - name: Prometheus
+    type: prometheus
+    url: http://prometheus:9090
+    access: proxy
+    isDefault: true
+
+
+
+
+# dashboards/infra-overview.json
+
+# (Simple dashboard template)
+
+{
+  "dashboard": {
+    "title": "Infrastructure Overview",
+    "panels": [
+      {
+        "type": "graph",
+        "title": "CPU Utilization",
+        "targets": [{ "expr": "node_cpu_seconds_total" }]
+      }
+    ]
+  }
+}
+
+
+
+# dashboards/app-performance.json
+
+{
+  "dashboard": {
+    "title": "Application Performance",
+    "panels": [
+      {
+        "type": "graph",
+        "title": "Request Latency",
+        "targets": [{ "expr": "http_request_duration_seconds" }]
+      }
+    ]
+  }
+}
