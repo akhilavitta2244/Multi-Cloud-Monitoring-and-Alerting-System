@@ -1,0 +1,12 @@
+# Deploy Infra
+cd terraform
+terraform init
+terraform apply -auto-approve
+
+
+# Deploy Prometheus & Grafana
+kubectl apply -f prometheus/
+kubectl apply -f grafana/
+
+
+# Access Grafana → http://localhost:3000 (default user: admin / admin)
