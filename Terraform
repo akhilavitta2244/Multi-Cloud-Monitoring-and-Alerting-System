@@ -1,0 +1,72 @@
+# provider.tf
+terraform {
+  required_version = ">= 1.4.0"
+  required_providers {
+    aws = { source = "hashicorp/aws", version = "~> 5.0" }
+    azurerm = { source = "hashicorp/azurerm", version = "~> 4.0" }
+    google = { source = "hashicorp/google", version = "~> 5.0" }
+  }
+}
+
+provider "aws" {
+  region = var.aws_region
+}
+
+provider "azurerm" {
+  features {}
+  subscription_id = var.azure_subscription_id
+}
+
+provider "google" {
+  project = var.gcp_project_id
+  region  = var.gcp_region
+}
+
+
+
+# variables.tf
+variable "aws_region" { default = "us-east-1" }
+variable "azure_subscription_id" { default = "" }
+variable "gcp_project_id" { default = "" }
+variable "gcp_region" { default = "us-central1" }
+
+
+
+# main.tf
+resource "aws_cloudwatch_dashboard" "main" {
+  dashboard_name = "MultiCloudDashboard"
+  dashboard_body = jsonencode({
+    widgets = [{
+      type = "metric",
+      x = 0,
+      y = 0,
+      width = 12,
+      height = 6,
+      properties = {
+        metrics = [["AWS/EC2", "CPUUtilization"]],
+        period = 300,
+        stat = "Average",
+        region = var.aws_region,
+        title = "AWS CPU Utilization"
+      }
+    }]
+  })
+}
+
+
+
+# backend.tf
+terraform {
+  backend "s3" {
+    bucket = "your-terraform-state-bucket"
+    key    = "multi-cloud-monitoring/terraform.tfstate"
+    region = "us-east-1"
+  }
+}
+
+
+
+# outputs.tf
+output "dashboard_name" {
+  value = aws_cloudwatch_dashboard.main.dashboard_name
+}
