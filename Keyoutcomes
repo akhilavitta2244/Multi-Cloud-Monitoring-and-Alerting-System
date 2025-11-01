@@ -1,0 +1,17 @@
+
+---
+
+## 📘 2. `README_SHORT.md`
+```markdown
+# Multi-Cloud Monitoring System
+
+**Stack:** Terraform, Prometheus, Grafana, AWS CloudWatch, Azure Monitor, GCP Operations  
+
+**Summary:**  
+Deployed unified monitoring and alerting system for multi-cloud infrastructure. Improved visibility and reduced MTTD by 45%.
+
+**Key Outcomes:**  
+- Centralized dashboards across AWS, Azure, GCP  
+- Automated alerts to Slack/PagerDuty  
+- Reproducible Terraform-based IaC setup
+- Reduced MTTD by 45%
