@@ -1,0 +1,31 @@
+# prometheus.yml
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'aws-metrics'
+    static_configs:
+      - targets: ['aws-cloudwatch-exporter:9106']
+
+  - job_name: 'azure-metrics'
+    static_configs:
+      - targets: ['azure-metrics-exporter:9107']
+
+  - job_name: 'gcp-metrics'
+    static_configs:
+      - targets: ['gcp-exporter:9108']
+
+
+
+# alerts.yml
+groups:
+  - name: infra-alerts
+    rules:
+      - alert: HighCPUUsage
+        expr: avg(rate(node_cpu_seconds_total[5m])) > 0.85
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High CPU usage detected"
+          description: "CPU usage > 85% for 2m"
